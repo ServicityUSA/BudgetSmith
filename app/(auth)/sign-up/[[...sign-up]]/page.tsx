@@ -9,7 +9,7 @@ export default function Page() {
         <div className="text-center space-y-4 pt-16">
           <h1 className="font-bold text-3xl text-[#2E2A47]">Hello!</h1>
           <p className="text-base text-[#7E8CA0]">
-            Create an account to start using the Finances app.
+            Create an account to start using the Budgetsmith.
           </p>
         </div>
         <div className="flex items-center justify-center mt-8">
