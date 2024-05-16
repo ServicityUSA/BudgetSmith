@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 type NewAccountState = {
   isOpen: boolean;
@@ -6,8 +7,10 @@ type NewAccountState = {
   onClose: () => void;
 };
 
-export const useNewAccount = create<NewAccountState>((set) => ({
-  isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
-}));
+export const useNewAccount = create<NewAccountState>()(
+  devtools((set) => ({
+    isOpen: false,
+    onOpen: () => set({ isOpen: true }),
+    onClose: () => set({ isOpen: false }),
+  }))
+);
