@@ -12,7 +12,7 @@ export default function HeaderLogo() {
           height={28}
           className="cursor-pointer"
         />
-        <p className="font-semibold text-white text-2xl ml-2.5">Budgetsmith</p>
+        <p className="font-semibold text-white text-2xl ml-2.5">BudgetSmith</p>
       </div>
     </Link>
   );
