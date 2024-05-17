@@ -44,7 +44,6 @@ export default function AccountForm({
   };
 
   const handleDelete = () => {
-    console.log("delete");
     onDelete?.();
   };
 
