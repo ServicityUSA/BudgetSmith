@@ -11,7 +11,7 @@ export default function WelcomeMsg() {
         {user?.firstName || "User"} {String.fromCodePoint(0x1f44b, 0x1f3fb)}
       </h2>
       <p className="text-sm lg:text-base text-[#89b6fd]">
-        This is your Financial Overview Report
+        Understand your finances to make informed decisions
       </p>
     </div>
   );
