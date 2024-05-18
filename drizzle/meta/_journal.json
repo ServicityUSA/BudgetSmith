@@ -22,6 +22,13 @@
       "when": 1716047454580,
       "tag": "0002_organic_machine_man",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1716054918266,
+      "tag": "0003_swift_fixer",
+      "breakpoints": true
     }
   ]
 }
