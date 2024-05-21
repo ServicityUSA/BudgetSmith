@@ -4,28 +4,26 @@ import { Loader2, Plus } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNewTransaction } from "@/features/transactions/hooks/use-new-transaction";
-import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
+import { useGetTransactions } from "@/features/transactions/api/use-get-transactions";
+import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions";
 
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/data-table";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { columns } from "@/app/(dashboard)/accounts/columns";
+import { columns } from "@/app/(dashboard)/transactions/columns";
 
 export default function TransactionsPage() {
   const onOpen = useNewTransaction((state) => state.onOpen);
 
-  const accountsQuery = useGetAccounts();
-  const accounts = (accountsQuery.data ?? []).sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
+  const transactionsQuery = useGetTransactions();
+  const transactions = transactionsQuery.data ?? [];
+  const deleteTransactions = useBulkDeleteTransactions();
 
-  const deleteAccounts = useBulkDeleteAccounts();
+  const isDisabled =
+    transactionsQuery.isLoading || deleteTransactions.isPending;
 
-  const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending;
-
-  if (accountsQuery.isLoading) {
+  if (transactionsQuery.isLoading) {
     return (
       <div className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24">
         <Card className="border-none drop-shadow-sm">
@@ -53,11 +51,11 @@ export default function TransactionsPage() {
         <CardContent>
           <DataTable
             columns={columns}
-            data={accounts}
-            filterKey="name"
+            data={transactions}
+            filterKey="payee"
             onDelete={(rows) => {
               const ids = rows.map((row) => row.original.id);
-              deleteAccounts.mutate({ ids });
+              deleteTransactions.mutate({ ids });
             }}
             disabled={isDisabled}
           />

@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-type OpenAccountState = {
+type OpenTransactionState = {
   id?: string;
   isOpen: boolean;
   onOpen: (id: string) => void;
   onClose: () => void;
 };
 
-export const useOpenAccount = create<OpenAccountState>()(
+export const useOpenTransaction = create<OpenTransactionState>()(
   devtools((set) => ({
     id: undefined,
     isOpen: false,
