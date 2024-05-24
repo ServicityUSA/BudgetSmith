@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Loader2, Plus } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,9 +12,37 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/data-table";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import UploadButton from "./upload-button";
+import ImportCard from "./import-card";
 import { columns } from "@/app/(dashboard)/transactions/columns";
 
+enum VARIANTS {
+  LIST = "LIST",
+  IMPORT = "IMPORT",
+}
+
+const INITIAL_IMPORT_RESULTS = {
+  data: [],
+  errors: [],
+  meta: {},
+};
+
 export default function TransactionsPage() {
+  const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST);
+  const [importResults, setImportResults] = useState<
+    typeof INITIAL_IMPORT_RESULTS
+  >(INITIAL_IMPORT_RESULTS);
+
+  const onUpload = (results: typeof INITIAL_IMPORT_RESULTS) => {
+    setImportResults(results);
+    setVariant(VARIANTS.IMPORT);
+  };
+
+  const onCancelImport = () => {
+    setImportResults(INITIAL_IMPORT_RESULTS);
+    setVariant(VARIANTS.LIST);
+  };
+
   const onOpen = useNewTransaction((state) => state.onOpen);
 
   const transactionsQuery = useGetTransactions();
@@ -38,15 +67,30 @@ export default function TransactionsPage() {
     );
   }
 
+  if (variant === VARIANTS.IMPORT) {
+    return (
+      <>
+        <ImportCard
+          data={importResults.data}
+          onCancel={onCancelImport}
+          onSubmit={() => {}}
+        />
+      </>
+    );
+  }
+
   return (
     <div className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24">
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
           <CardTitle className="text-xl line-clamp-1">Transactions</CardTitle>
-          <Button size="sm" onClick={onOpen}>
-            <Plus className="mr-2 size-4" />
-            Add New
-          </Button>
+          <div className="flex flex-col lg:flex-row gap-y-2 items-center gap-x-2">
+            <Button size="sm" onClick={onOpen} className="w-full lg:w-auto">
+              <Plus className="mr-2 size-4" />
+              Add New
+            </Button>
+            <UploadButton onUpload={onUpload} />
+          </div>
         </CardHeader>
         <CardContent>
           <DataTable
